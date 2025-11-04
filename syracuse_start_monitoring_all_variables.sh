@@ -1,9 +1,27 @@
 #!/bin/bash
 
+# ========= initial setup
+
+# Open folder with all scripts 
+cd /home/syr-neutrino/Desktop/Longevity_Test
+
+# Start virtual environment
+source larpix/bin/activate
+
+# Start InfluxDB
+sudo systemctl start influxdb
+sudo systemctl enable influxdb
+
+# Make CTC100 USB port into executable
+sudo chmod a+rw /dev/ttyUSB0
+
+cd /home/syr-neutrino/Desktop/Longevity_Test/larpix-5x5-test
+
+# ========= start monitoring variables
+
 # start grafana cloud
 # make sure to save the grafana-cloud token as an environment variable
 # > export MY_GRAFANA_CLOUD_TOKEN="the-secret-token"
-MY_GRAFANA_CLOUD_TOKEN=$(<.token)
 gnome-terminal -- bash -c "echo 'Start Grafana Cloud'; source start_grafana_cloud.sh; exec bash"
 
 # monitor variables from labjack
