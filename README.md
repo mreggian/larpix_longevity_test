@@ -1,3 +1,11 @@
+# Initial requirements
+
+You should have the following files in your directory:
+
+- `.token`. It is a file that simply contains the grafana-cloud token.
+
+- `influxdb_config.py`. This is a python script with the following variables: `token`, `ORG`, `url` and `BUCKET`, which are all information about your InfluxDB database.
+
 # Files in the repository
 
 Find below a brief description of the files in this repository:
