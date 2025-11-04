@@ -8,4 +8,4 @@ Find below a brief description of the files in this repository:
 
 - `monitor_labjack.py`. This script retrieves information from the labjack device and saves it to a database.
 
-- `syracuse_start_monitoring_all_variables.sh`. This script runs the three scripts above, each one in a different terminal.
+- `syracuse_start_monitoring_all_variables.sh`. This script starts grafana-cloud server and runs the three scripts above, each one in a different terminal.
