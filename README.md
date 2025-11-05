@@ -25,28 +25,33 @@ Find below a brief description of the files in this repository:
 
 # How to run scripts
 
-- Start influxdb, grafana-cloud server and run the scripts that collect information from compressor, ctc100 and labjack, each one in a different terminal.
-  ```
-  source syracuse_start_monitoring_all_variables.sh
-  ```
+1. **Network to compressor**. The very first thing is to make sure that the compressor is receiving network connection. Go to "wired connections" and check if the network is active for compressor. Then, physically disconnect the usb cable leading to the compressor, wait 5 seconds, and connect it again. The network connection should have been established by now.
 
-- If you want to run the scripts for the compressor, ctc100 and labjack individually, do the following:
-  Make sure grafana-cloud is active
-  ```
-  source start_grafana_cloud.sh
-  ```
-  Then, on a different terminal, prepare environment and run the script you want:
-  ```
-  # set the environment
-  source /home/syr-neutrino/Desktop/Longevity_Test/larpix/bin/activate
-
-  # activate InfluxDB server
-  sudo systemctl start influxdb
-  sudo systemctl enable influxdb
-
-  # set usb port to executable (only for compressor)
-  sudo chmod a+rw /dev/ttyUSB0
-
-  # run python script, make sure the name is correct
-  python3 monitor_compressor.py
-  ```
+2. **Run script to collect data**. In principle you should be able to simply run the script below. It will start influxdb, grafana-cloud server and run the scripts that collect information from compressor, ctc100 and labjack, each one in a different terminal.
+    ```
+    source syracuse_start_monitoring_all_variables.sh
+    ```
+    However, if you want to run the scripts for the compressor, ctc100 and labjack individually, do the following.
+   
+    Make sure grafana-cloud and influxdb-server is active
+    ```
+    source start_grafana_cloud.sh
+    
+    sudo systemctl start influxdb
+    sudo systemctl enable influxdb
+    ```
+    Then, open three different terminals:
+    ```
+    # on terminal 1
+    source /home/syr-neutrino/Desktop/Longevity_Test/larpix/bin/activate
+    sudo chmod a+rw /dev/ttyUSB0
+    python3 monitor_compressor.py
+    
+    # on terminal 2
+    source /home/syr-neutrino/Desktop/Longevity_Test/larpix/bin/activate
+    python3 monitor_labjack.py
+    
+    # on terminal 3
+    source /home/syr-neutrino/Desktop/Longevity_Test/larpix/bin/activate
+    python3 monitor_ctc100.py
+    ```
