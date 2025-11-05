@@ -14,6 +14,7 @@ if __name__ == "__main__":
     client = influxdb_client.InfluxDBClient(url=url, token=token, org=ORG)
     write_api = client.write_api(write_options=SYNCHRONOUS)
 
+    # this dictionary links the variable to its position in the "response" variable (line 30)
     dict = {
         "temperature": 0,
         "voltage": 16,
