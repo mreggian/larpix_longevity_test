@@ -23,6 +23,8 @@ Find below a brief description of the files in this repository:
 
 - `monitor_labjack.py`. This script retrieves information from the labjack device and saves it to a database.
 
+- `measure_baseline.py`. This script collects the vddd, vdda, iddd and idda for all pacman tiles, as well as the mean pedestal and the number of packets of each channel. The information is then saved into a dictionary, an influxdb database, or both. Read description for more information.
+
 # How to run scripts
 
 1. **Network to compressor**. The very first thing is to make sure that the compressor is receiving network connection. Go to "wired connections" and check if the network is active for compressor. Then, physically disconnect the usb cable leading to the compressor, wait 5 seconds, and connect it again. The network connection should have been established by now.
