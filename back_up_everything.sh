@@ -94,3 +94,25 @@ for i in "${chosen_variables[@]}"; do
     eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => ${variables[i]}) |> keep(columns:[${columns[i]}])' --raw > ${dir_path}/${file_name[i]}_${file_name_tag}.csv"
     echo ""
 done
+
+
+# ===========================
+# Back up variables from pacman boards
+
+# loop over all tiles, and save vdda, vddd, idda and iddd, as well as channel information
+for tile in [1,2,3,4,5,6,7,8]:
+    # vdda
+    eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => "r._measurement==\"pacman_boards\" and r._field==\"vdda\" and r.tile==\"${tile}\"") |> keep(columns:["\"_time\",\"_value\",\"_field\",\"_measurement\",\"tile\""])' --raw > ${dir_path}/pacman_vdda_tile${tile}_${file_name_tag}.csv"
+    # vddd
+    eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => "r._measurement==\"pacman_boards\" and r._field==\"vddd\" and r.tile==\"${tile}\"") |> keep(columns:["\"_time\",\"_value\",\"_field\",\"_measurement\",\"tile\""])' --raw > ${dir_path}/pacman_vddd_tile${tile}_${file_name_tag}.csv"
+    # idda
+    eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => "r._measurement==\"pacman_boards\" and r._field==\"idda\" and r.tile==\"${tile}\"") |> keep(columns:["\"_time\",\"_value\",\"_field\",\"_measurement\",\"tile\""])' --raw > ${dir_path}/pacman_idda_tile${tile}_${file_name_tag}.csv"
+    # iddd
+    eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => "r._measurement==\"pacman_boards\" and r._field==\"iddd\" and r.tile==\"${tile}\"") |> keep(columns:["\"_time\",\"_value\",\"_field\",\"_measurement\",\"tile\""])' --raw > ${dir_path}/pacman_iddd_tile${tile}_${file_name_tag}.csv"
+
+    # for each tile, also loop over all channels and save mean pedestal and packets
+    for (( ch=0; ch<=64; ch++ )); do
+            # mean pedestal
+            eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => "r._measurement==\"pacman_boards\" and r._field==\"mean_pedestal\" and r.tile==\"${tile}\" and r.channel_id==\"${ch}\"") |> keep(columns:["\"_time\",\"_value\",\"_field\",\"_measurement\",\"tile\",\"channel_id\""])' --raw > ${dir_path}/pacman_mean_pedestal_tile${tile}_ch${ch}_${file_name_tag}.csv"
+            #packets
+            eval "influx query --org \"$org\" --token \"$influx_token_marina\" 'from(bucket:\"$bucket\") |> range($time_interval) |> filter(fn: (r) => "r._measurement==\"pacman_boards\" and r._field==\"packets\" and r.tile==\"${tile}\" and r.channel_id==\"${ch}\"") |> keep(columns:["\"_time\",\"_value\",\"_field\",\"_measurement\",\"tile\",\"channel_id\""])' --raw > ${dir_path}/pacman_packets_tile${tile}_ch${ch}_${file_name_tag}.csv"
